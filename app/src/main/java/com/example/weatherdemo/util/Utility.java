@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 /**
  * Created by Wangdk on 2017/10/11.
+ * 解析和处理服务器返回的省级数据，组装成实体类存入数据库
  */
 
 public class Utility {
@@ -20,13 +21,14 @@ public class Utility {
     public static boolean handleProvinceResponse(String response){
         if (!TextUtils.isEmpty(response)){
             try {
+                //JSONArray,JSONObject解析数据，组装成实体类对象，调用save存数到数据库
                 JSONArray allProvinces = new JSONArray(response);
                 for (int i = 0; i < allProvinces.length(); i++){
                     JSONObject provinceObject = allProvinces.getJSONObject(i);
-                    Province province = new Province();
+                    Province province = new Province();//组装成实体类
                     province.setProvinceName(provinceObject.getString("name"));
                     province.setProvinceCode(provinceObject.getInt("id"));
-                    province.save();
+                    province.save();//存入数据库
                 }
                 return true;
             }catch (JSONException e){
