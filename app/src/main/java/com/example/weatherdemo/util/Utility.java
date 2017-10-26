@@ -5,6 +5,8 @@ import android.text.TextUtils;
 import com.example.weatherdemo.db.City;
 import com.example.weatherdemo.db.County;
 import com.example.weatherdemo.db.Province;
+import com.example.weatherdemo.gson.Weather;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,7 +23,7 @@ public class Utility {
     public static boolean handleProvinceResponse(String response){
         if (!TextUtils.isEmpty(response)){
             try {
-                //JSONArray,JSONObject解析数据，组装成实体类对象，调用save存数到数据库
+                //简单数据直接用JSONArray,JSONObject解析数据，组装成实体类对象，调用save存数到数据库
                 JSONArray allProvinces = new JSONArray(response);
                 for (int i = 0; i < allProvinces.length(); i++){
                     JSONObject provinceObject = allProvinces.getJSONObject(i);
@@ -78,5 +80,18 @@ public class Utility {
             }
         }
         return false;
+    }
+
+    /*JSON解析天气数据成实体类Weather*/
+    public static Weather handleWeatherResponse(String response){
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            JSONArray jsonArray = jsonObject.getJSONArray("HeWeather");
+            String weatherContent = jsonArray.getJSONObject(0).toString();
+            return new Gson().fromJson(weatherContent, Weather.class);//通过fromJson把JSON转化为Weather实体类对象
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 }
