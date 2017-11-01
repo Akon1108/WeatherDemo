@@ -1,5 +1,6 @@
 package com.example.weatherdemo;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.weatherdemo.gson.Forecast;
 import com.example.weatherdemo.gson.Weather;
+import com.example.weatherdemo.service.AutoUpdateService;
 import com.example.weatherdemo.util.HttpUtil;
 import com.example.weatherdemo.util.Utility;
 
@@ -253,7 +255,11 @@ public class WeatherActivity extends AppCompatActivity {
         sportText.setText(sport);
         //ScrollView重新可见
         weatherLayout.setVisibility(View.VISIBLE);
+        //启动自动更新服务
+        Intent intent = new Intent(this, AutoUpdateService.class);
+        startActivity(intent);
     }
+
 }
 
 
